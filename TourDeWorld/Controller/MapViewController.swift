@@ -122,6 +122,7 @@ class MapViewController: BaseViewController, MKMapViewDelegate
         if pinView == nil
         {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            pinView?.animatesDrop = true
             pinView!.pinTintColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)
         }
         else

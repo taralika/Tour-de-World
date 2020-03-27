@@ -165,6 +165,7 @@ class PhotoAlbumViewController: BaseViewController, MKMapViewDelegate, UICollect
         annotation.coordinate.longitude = longitude
         mapView.addAnnotation(annotation)
         mapView.showAnnotations(mapView.annotations, animated: true)
+        mapView.centerCoordinate = annotation.coordinate
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?
