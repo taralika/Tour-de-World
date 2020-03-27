@@ -182,7 +182,28 @@ class PhotoAlbumViewController: BaseViewController, MKMapViewDelegate, UICollect
             pinView!.annotation = annotation
         }
         
+        pinView?.isDraggable = true
         return pinView
+    }
+    
+    // allow dragging the pin to a new coordinate on the map
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationView.DragState, fromOldState oldState: MKAnnotationView.DragState)
+    {
+        switch newState
+        {
+            case .canceling, .ending:
+
+                guard let coordinate = view.annotation?.coordinate else { preconditionFailure() }
+                pin.latitude = coordinate.latitude
+                pin.longitude = coordinate.longitude
+                clearPhotos()
+                photos = []
+                flickrPhotos = []
+                getPhotos()
+                photoCollection.reloadData()
+
+            default: break
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
