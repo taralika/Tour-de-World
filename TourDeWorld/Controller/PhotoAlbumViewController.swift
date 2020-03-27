@@ -44,7 +44,7 @@ class PhotoAlbumViewController: BaseViewController, MKMapViewDelegate, UICollect
         }
         else
         {
-            getPhotos()
+            loadPhotos()
         }
     }
     
@@ -52,7 +52,7 @@ class PhotoAlbumViewController: BaseViewController, MKMapViewDelegate, UICollect
     {
         super.viewWillAppear(animated)
         showSelectedPin()
-        getPhotos()
+        loadPhotos()
     }
     
     func fetchFlickrPhotos() -> [FlickrPhoto]
@@ -82,12 +82,12 @@ class PhotoAlbumViewController: BaseViewController, MKMapViewDelegate, UICollect
         clearPhotos()
         photos = []
         flickrPhotos = []
-        getPhotos()
+        loadPhotos()
         photoCollection.reloadData()
     }
     
     // load random photos
-    func getPhotos()
+    func loadPhotos()
     {
         showActivityIndicator()
         PhotoRequests.searchPhotos(latitude: latitude, longitude: longitude, page: page, completion:
@@ -200,7 +200,7 @@ class PhotoAlbumViewController: BaseViewController, MKMapViewDelegate, UICollect
                 clearPhotos()
                 photos = []
                 flickrPhotos = []
-                getPhotos()
+                loadPhotos()
                 photoCollection.reloadData()
 
             default: break
