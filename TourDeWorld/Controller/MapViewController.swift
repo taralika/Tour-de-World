@@ -80,6 +80,24 @@ class MapViewController: BaseViewController, MKMapViewDelegate
             let pin = Pin(context: dataController.viewContext)
             pin.latitude = coordinate.latitude
             pin.longitude = coordinate.longitude
+            
+            let geocoder = CLGeocoder()
+            let clLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            geocoder.reverseGeocodeLocation(clLocation)
+            { placeMarks, error in
+                DispatchQueue.main.async
+                {
+                    if let placeMark = placeMarks?.first
+                    {
+                        if (placeMark.locality != nil && placeMark.administrativeArea != nil)
+                        {
+                            pin.locationName = (placeMark.locality ?? "") + ", " + (placeMark.administrativeArea ?? "")
+                            print("pin location = " + (pin.locationName ?? "No Name"))
+                        }
+                    }
+                }
+            }
+            
             let annotation = MKPointAnnotation()
             annotation.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
             mapView.addAnnotation(annotation)
@@ -93,7 +111,6 @@ class MapViewController: BaseViewController, MKMapViewDelegate
             }
             pins.append(pin)
             mapView.reloadInputViews()
-//            hideActivityIndicator()
         }
     }
         
@@ -147,6 +164,7 @@ class MapViewController: BaseViewController, MKMapViewDelegate
             if pin.latitude == view.annotation?.coordinate.latitude && pin.longitude == view.annotation?.coordinate.longitude
             {
                 controller.pin = pin
+                controller.title = pin.locationName
             }
         }
         
